@@ -43,28 +43,6 @@ int main(int argc, char *argv[]) {
   return 0;
 }
 
-//  // 4. SEND AND RECEIVE MESSAGES.
-//  char * response = (char*)malloc(sizeof(char)*BUF_SIZE);
-//  char * msg = (char*)malloc(sizeof(char)*BUF_SIZE);
-//  int connected = 1;
-//  while ( connected == 1 ) {
-//    memset(msg, 0, BUF_SIZE);
-//    fgets(msg, BUF_SIZE, stdin); 
-//    write(sockfd, msg, strlen(msg));
-//    memset(response, 0, BUF_SIZE);
-//    read(sockfd, response, BUF_SIZE);
-//    printf("response: %s\n", response);
-//    if ( strlen(response) < 2 ) {
-//      printf("\nSession disconnected.\n");
-//      connected = 0;
-//    }
-//  }
-//  free(msg);
-//  free(response);
-//  close(sockfd);
-//  return 0;
-//}
-
 int tcpConnect(char * host, char * port) {
   struct addrinfo *firstDNSRslt = resolveHost(host, port);
   int sockfd = createTCPSocket();
@@ -135,3 +113,28 @@ struct addrinfo * resolveHost(char * host, char * port) {
   }
   return firstDNSRslt;
 }
+
+
+
+//  // 4. SEND AND RECEIVE MESSAGES.
+//  char response[BUF_SIZE];  //= (char*)malloc(sizeof(char)*BUF_SIZE);
+//  char msg[BUF_SIZE];       //= (char*)malloc(sizeof(char)*BUF_SIZE);
+//  int connected = 1;
+//  while ( connected == 1 ) {
+//    memset(msg, 0, BUF_SIZE);
+//    fgets(msg, BUF_SIZE, stdin); 
+//    write(sockfd, msg, strlen(msg));
+//    memset(response, 0, BUF_SIZE);
+//    read(sockfd, response, BUF_SIZE);
+//    printf("response: %s\n", response);
+//    if ( strlen(response) < 2 ) {
+//      printf("\nSession disconnected.\n");
+//      connected = 0;
+//    }
+//  }
+//  free(msg);
+//  free(response);
+//  close(sockfd);
+//  return 0;
+//}
+
