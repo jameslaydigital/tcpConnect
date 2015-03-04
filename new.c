@@ -5,8 +5,12 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
-
 #define BUF_SIZE 500
+
+struct addrinfo * resolveHost(char*, char*);
+int createTCPSocket();
+void bindSocket(int, struct addrinfo*);
+int tcpConnect(char*, char*);
 
 /*  PROCESS:
  *
@@ -16,48 +20,52 @@
  *
  * */
 
-struct addrinfo * resolveHost(char*, char*);
-int createTCPSocket();
-void bindSocket(int, struct addrinfo*);
-int connectTo(char*, char*);
-
 int main(int argc, char *argv[]) {
+
   // PREPARATION
-  //ensure proper arguments from end-user
   if (argc < 3) {
      fprintf(stderr, "Usage: %s host port\n", argv[0]);
      exit(EXIT_FAILURE);
   }
-
-  //connect to host.
   char * host = argv[1];
   char * port = argv[2];
-  int sockfd = connectTo(host, port);
 
 
+  //========== EXAMPLE USAGE ========
+  int sockfd = tcpConnect(host, port);
+  //=================================
+
+  //TODO - do something with the connection.
 
 
-  // 4. SEND AND RECEIVE MESSAGES.
-  char * response = (char*)malloc(sizeof(char)*BUF_SIZE);
-  char * msg = (char*)malloc(sizeof(char)*BUF_SIZE);
-  int connected = 1;
-  while ( connected == 1 ) {
-    memset(msg, 0, BUF_SIZE);
-    fgets(msg, BUF_SIZE, stdin); 
-    write(sockfd, msg, strlen(msg));
-    memset(response, 0, BUF_SIZE);
-    read(sockfd, response, BUF_SIZE);
-    printf("response: %s\n", response);
-    if ( strlen(response) < 2 ) {
-      printf("\nSession disconnected.\n");
-      connected = 0;
-    }
-  }
+  //close the connection.
   close(sockfd);
   return 0;
 }
 
-int connectTo(char * host, char * port) {
+//  // 4. SEND AND RECEIVE MESSAGES.
+//  char * response = (char*)malloc(sizeof(char)*BUF_SIZE);
+//  char * msg = (char*)malloc(sizeof(char)*BUF_SIZE);
+//  int connected = 1;
+//  while ( connected == 1 ) {
+//    memset(msg, 0, BUF_SIZE);
+//    fgets(msg, BUF_SIZE, stdin); 
+//    write(sockfd, msg, strlen(msg));
+//    memset(response, 0, BUF_SIZE);
+//    read(sockfd, response, BUF_SIZE);
+//    printf("response: %s\n", response);
+//    if ( strlen(response) < 2 ) {
+//      printf("\nSession disconnected.\n");
+//      connected = 0;
+//    }
+//  }
+//  free(msg);
+//  free(response);
+//  close(sockfd);
+//  return 0;
+//}
+
+int tcpConnect(char * host, char * port) {
   struct addrinfo *firstDNSRslt = resolveHost(host, port);
   int sockfd = createTCPSocket();
   bindSocket(sockfd, firstDNSRslt);
